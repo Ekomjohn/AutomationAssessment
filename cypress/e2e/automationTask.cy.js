@@ -18,6 +18,7 @@ describe("Automating the testing of a web application's login functionality usin
           cy.log("Login failed");
         }
       });
+    cy.wait(10000)
   });
 
   it("should fail to log in with invalid credentials", () => {
