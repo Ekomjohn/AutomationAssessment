@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 describe("Automating the testing of a web application's login functionality using Cypress", function () {
-  it("navigates to the Sauce Labs URL and login with valid credentials", () => {
+  it("navigates to the Sauce Labs URL and logs in with valid credentials", () => {
     // Input valid username and password
     cy.visit("https://www.saucedemo.com/");
 
