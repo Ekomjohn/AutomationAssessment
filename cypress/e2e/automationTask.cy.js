@@ -2,13 +2,13 @@
 
 describe('Demoblaze E-commerce Flow', () => {
   // Visit website before each test
-  /*beforeEach(() => {
+  beforeEach(() => {
     cy.visit('https://www.demoblaze.com/')
-  });*/
+  });
 
   // Login Test
   it('should log in with valid credentials', () => {
-    cy.visit('https://www.demoblaze.com/')
+   
     // Click the "Log in" button
     cy.get('#login2').click();
 
@@ -28,7 +28,7 @@ describe('Demoblaze E-commerce Flow', () => {
 
   // Add item to cart
   it('should add item to cart', () => {
-    cy.visit('https://www.demoblaze.com/')
+    
     // Click on the first item (Samsung galaxy s6 for example)
     cy.get('.card-title').contains('Samsung galaxy s6').click();
 
@@ -45,7 +45,7 @@ describe('Demoblaze E-commerce Flow', () => {
 
   // Checkout process
   it('should complete the checkout process', () => {
-    cy.visit('https://www.demoblaze.com/')
+    
     // Open the cart
     cy.get('#cartur').click();
 
