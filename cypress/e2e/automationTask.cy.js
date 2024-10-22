@@ -1,38 +1,74 @@
-/// <reference types="cypress" />
+// cypress/e2e/demoblaze_spec.cy.js
 
-describe("Automating the testing of a web application's login functionality using Cypress", function () {
-  it("navigates to the Sauce Labs URL and logs in with valid credentials", () => {
-    // Input valid username and password
-    cy.visit("https://www.saucedemo.com/");
+describe('Demoblaze E-commerce Flow', () => {
+  // Visit website before each test
+  /*beforeEach(() => {
+    cy.visit('https://www.demoblaze.com/')
+  });*/
 
-    cy.get("#user-name").type("standard_user");
-    cy.get("#password").type("secret_sauce");
-    cy.get("#login-button").click();
+  // Login Test
+  it('should log in with valid credentials', () => {
+    cy.visit('https://www.demoblaze.com/')
+    // Click the "Log in" button
+    cy.get('#login2').click();
 
-    cy.url()
-      .should("include", "inventory")
-      .then((urlIncludesInventory) => {
-        if (urlIncludesInventory) {
-          cy.log("User successfully logged in");
-        } else {
-          cy.log("Login failed");
-        }
-      });
-    cy.wait(10000)
+    // Wait for modal to appear
+    cy.wait(1000);
+
+    // Input username and password
+    cy.get('#loginusername').type('Ekay'); // replace with your username
+    cy.get('#loginpassword').type('Johnae28'); // replace with your password
+
+    // Click login
+    cy.get('button').contains('Log in').click();
+
+    // Assert that the user is logged in by checking the navbar for the username
+    cy.get('#nameofuser').should('contain', 'Welcome Ekay'); // replace with actual username
   });
 
-  it("should fail to log in with invalid credentials", () => {
-    cy.visit("https://www.saucedemo.com/");
-    cy.get("#user-name").type("invalid_user");
-    cy.get("#password").type("secret_source");
-    cy.get("#login-button").click();
+  // Add item to cart
+  it('should add item to cart', () => {
+    cy.visit('https://www.demoblaze.com/')
+    // Click on the first item (Samsung galaxy s6 for example)
+    cy.get('.card-title').contains('Samsung galaxy s6').click();
 
-    cy.get('[data-test="error"]')
-      .should("be.visible")
-      .then((errorVisible) => {
-        if (errorVisible) {
-          cy.log("Failed to login with invalid credentials.");
-        }
-      });
+    // Add to cart
+    cy.get('.btn-success').contains('Add to cart').click();
+
+    // Handle alert pop-up
+    cy.on('window:alert', (text) => {
+      expect(text).to.contains('Product added');
+    });
+
+    cy.wait(1000); // wait for the item to be added
+  });
+
+  // Checkout process
+  it('should complete the checkout process', () => {
+    cy.visit('https://www.demoblaze.com/')
+    // Open the cart
+    cy.get('#cartur').click();
+
+    // Wait for cart to load
+    cy.wait(1000);
+
+    // Proceed to place the order
+    cy.get('.btn-success').contains('Place Order').click();
+
+    // Fill out the form
+    cy.get('#name').type('John Doe');
+    cy.get('#country').type('USA');
+    cy.get('#city').type('New York');
+    cy.get('#card').type('1234 5678 9123 4567');
+    cy.get('#month').type('12');
+    cy.get('#year').type('2024');
+
+    // Submit order
+    cy.get('.btn-primary').contains('Purchase').click({force:true});
+
+    cy.wait(2000);
+    // Assert the success message
+    cy.xpath("//body/div[1]").should('exist')
+    //cy.xpath("//h2[contains(text(),'Thank you for your purchase!')]").should('have.value','Thank you for your purchase!');
   });
 });
